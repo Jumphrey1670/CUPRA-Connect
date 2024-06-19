@@ -14,15 +14,15 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
 try:
-    from seatconnect import Connection
+    from CUPRAConnect import Connection
 except ModuleNotFoundError as e:
     print(f"Unable to import library: {e}")
     sys.exit(1)
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig()               ## IMPORTATNT - If you do not want console output, comment this line
 
-USERNAME = 'email@domain.com'
-PASSWORD = 'password'
+USERNAME = 'YOUR EMAIL HERE'        ## Best practice to NOT modify this file. Make a local copy which you
+PASSWORD = 'YOUR PASSWORD HERE'     ## can use safely - Changes to this file will likely be removed.
 PRINTRESPONSE = False
 INTERVAL = 20
 
@@ -117,11 +117,11 @@ async def main():
     async with ClientSession(headers={'Connection': 'keep-alive'}) as session:
         print('')
         print('########################################')
-        print('#      Logging on to Seat Connect     #')
+        print('#      Logging on to CUPRA Connect     #')
         print('########################################')
-        print(f"Initiating new session to Seat Connect with {USERNAME} as username")
+        print(f"Initiating new session to CUPRA Connect with {USERNAME} as username")
         connection = Connection(session, USERNAME, PASSWORD, PRINTRESPONSE)
-        print("Attempting to login to the Seat Connect service")
+        print("Attempting to login to the CUPRA Connect service")
         print(datetime.now())
         if await connection.doLogin():
             print('Login success!')
@@ -153,18 +153,18 @@ async def main():
                 print(f"\tVIN: {vehicle.vin}")
                 print(f"\tModel: {vehicle.model}")
                 print(f"\tManufactured: {vehicle.model_year}")
-                print(f"\tConnect service deactivated: {vehicle.deactivated}")
-                print("")
-                if vehicle.is_nickname_supported: print(f"\tNickname: {vehicle.nickname}")
-                #print(f"\tObject attributes, and methods:")
-                #for prop in dir(vehicle):
-                #    if not "__" in prop:
-                #        try:
-                #            func = f"vehicle.{prop}"
-                #            typ = type(eval(func))
-                #            print(f"\t\t{prop} - {typ}")
-                #        except:
-                #            pass
+                print(f"\tConnect service deactivated: {vehicle.deactivated}\n")
+        
+                
+                print(f"\tObject attributes, and methods:")
+                for prop in dir(vehicle):
+                   if not "__" in prop:
+                       try:
+                           func = f"vehicle.{prop}"
+                           typ = type(eval(func))
+                           print(f"\t\t{prop} - {typ}")
+                       except:
+                           pass
 
         else:
             return False
@@ -186,9 +186,9 @@ async def main():
         print(datetime.now())
         print('')
         print('########################################')
-        print('#    Updating all values from Seat    #')
+        print('#    Updating all values from CUPRA    #')
         print('########################################')
-        print("Updating ALL values from Seat Connect...")
+        print("Updating ALL values from CUPRA Connect...")
         if await connection.update_all():
             print("Success!")
         else:
@@ -247,40 +247,41 @@ async def main():
 
             print(f"Sleeping for {INTERVAL} seconds")
             time.sleep(INTERVAL)
-            # Examples for using set functions:
-            #vehicle.set_refresh()                                          # Takes no arguments, will trigger forced update
-            #vehicle.set_charger(action = "start")                          # action = "start" or "stop"
-            #vehicle.set_charger_current(value)                             # value = 1-255/Maximum/Reduced (PHEV: 252 for reduced and 254 for max, EV: Maximum/Reduced)
-            #vehicle.set_charge_limit(limit = 50)                           # limit = PHEV: 0/10/20/30/40/50, EV: 50/60/70/80/90/100
-            #vehicle.set_battery_climatisation(mode = False)                # mode = False or True
-            #vehicle.set_climatisation(mode = "auxilliary", spin="1234")    # mode = "auxilliary", "electric" or "off". spin is S-PIN and only needed for aux heating
-            #vehicle.set_climatisation_temp(temperature = 22)               # temperature = integer from 16 to 30
-            #vehicle.set_window_heating(action = "start")                   # action = "start" or "stop"
-            #vehicle.set_lock(action = "unlock", spin = "1234")             # action = "unlock" or "lock". spin = SPIN, needed for both
-            #vehicle.set_pheater(mode = "heating", spin = "1234")           # action = "heating", "ventilation" or "off". spin = SPIN, not needed for off
-            #vehicle.set_charge_limit(limit = 30)                           # limit = 0,10,20,30,40,50
-            #vehicle.set_timer_active(id = 1, action = "on"}                # id = 1, 2, 3, action = "on" or "off".
-            #vehicle.set_timer_schedule(id = 1,                             # id = 1, 2, 3
-            #    schedule = {                                               # Set the departure time, date and periodicity
-            #        "enabled": True,                                       # Set the timer active or not, True or False, required
-            #        "recurring": True,                                     # True or False for recurring, required
-            #        "date": "2021-05-21",                                  # Date for departure, required if recurring=False
-            #        "time": "08:00",                                       # Time for departure, required
-            #        "days": "nyynnnn",                                     # Days (mon-sun) for recurring schedule (n=disable, y=enable), required if recurring=True
-            #        "nightRateActive": True,                               # True or False Off-peak hours, optional
-            #        "nightRateStart": "00:00",                             # Off-peak hours start (HH:mm), optional
-            #        "nightRateEnd": "06:00",                               # Off-peak hours end (HH:mm), optional
-            #        "operationCharging": True,                             # True or False for charging, optional
-            #        "operationClimatisation": True,                        # True or False fro climatisation, optional
-            #        "targetTemp": 22,                                      # Target temperature for climatisation, optional
-            #    })
+            
+            ## Examples for using set functions:
+            vehicle.set_refresh()                                          # Takes no arguments, will trigger forced update
+            vehicle.set_charger(action = "start")                          # action = "start" or "stop"
+            vehicle.set_charger_current(100)                               # value = 1-255/Maximum/Reduced (PHEV: 252 for reduced and 254 for max, EV: Maximum/Reduced)
+            vehicle.set_charge_limit(limit = 50)                           # limit = PHEV: 0/10/20/30/40/50, EV: 50/60/70/80/90/100
+            vehicle.set_battery_climatisation(mode = False)                # mode = False or True
+            vehicle.set_climatisation(mode = "auxilliary", spin="1234")    # mode = "auxilliary", "electric" or "off". spin is S-PIN and only needed for aux heating
+            vehicle.set_climatisation_temp(temperature = 22)               # temperature = integer from 16 to 30
+            vehicle.set_window_heating(action = "start")                   # action = "start" or "stop"
+            await vehicle.set_lock(action = "unlock", spin = "1234")       # action = "unlock" or "lock". spin = SPIN, needed for both
+            vehicle.set_pheater(mode = "heating", spin = "1234")           # action = "heating", "ventilation" or "off". spin = SPIN, not needed for off
+            vehicle.set_charge_limit(limit = 30)                           # limit = 0,10,20,30,40,50
+            vehicle.set_timer_active(id = 1, action = "on")                # id = 1, 2, 3, action = "on" or "off".
+            vehicle.set_timer_schedule(id = 1,                             # id = 1, 2, 3
+               schedule = {                                                # Set the departure time, date and periodicity
+                   "enabled": True,                                        # Set the timer active or not, True or False, required
+                   "recurring": True,                                      # True or False for recurring, required
+                   "date": "2021-05-21",                                   # Date for departure, required if recurring=False
+                   "time": "08:00",                                        # Time for departure, required
+                   "days": "nyynnnn",                                      # Days (mon-sun) for recurring schedule (n=disable, y=enable), required if recurring=True
+                   "nightRateActive": True,                                # True or False Off-peak hours, optional
+                   "nightRateStart": "00:00",                              # Off-peak hours start (HH:mm), optional
+                   "nightRateEnd": "06:00",                                # Off-peak hours end (HH:mm), optional
+                   "operationCharging": True,                              # True or False for charging, optional
+                   "operationClimatisation": True,                         # True or False fro climatisation, optional
+                   "targetTemp": 22,                                       # Target temperature for climatisation, optional
+               })
 
-            # Example using a set function
-            #if await vehicle.set_charge_limit(limit=40):
-            #    print("Request completed successfully.")
-            #else:
-            #    print("Request failed.")
-            #print(vehicle.timer_action_status)
+            ## Example using a set function
+            if await vehicle.set_charge_limit(limit=40):
+               print("Request completed successfully.")
+            else:
+               print("Request failed.")
+            print(vehicle.timer_action_status)
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
