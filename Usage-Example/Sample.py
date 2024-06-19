@@ -20,6 +20,7 @@ except ModuleNotFoundError as e:
     sys.exit(1)
 
 logging.basicConfig()               ## IMPORTATNT - If you do not want console output, comment this line
+                                    ## (The logging will display your email + password in plaintext)
 
 USERNAME = 'YOUR EMAIL HERE'        ## Best practice to NOT modify this file. Make a local copy which you
 PASSWORD = 'YOUR PASSWORD HERE'     ## can use safely - Changes to this file will likely be removed.
