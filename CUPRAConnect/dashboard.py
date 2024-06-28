@@ -3,7 +3,7 @@
 
 import logging
 from datetime import datetime
-from seatconnect.utilities import camel2slug
+from CUPRAConnect.utilities import camel2slug
 
 _LOGGER = logging.getLogger(__name__)
 

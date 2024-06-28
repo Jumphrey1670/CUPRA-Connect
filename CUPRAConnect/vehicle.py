@@ -10,8 +10,8 @@ import hashlib
 from datetime import datetime, timedelta, timezone
 from json import dumps as to_json
 from collections import OrderedDict
-from seatconnect.utilities import find_path, is_valid_path
-from seatconnect.exceptions import (
+from CUPRAConnect.utilities import find_path, is_valid_path
+from CUPRAConnect.exceptions import (
     SeatConfigException,
     SeatException,
     SeatEULAException,
@@ -879,11 +879,11 @@ class Vehicle:
         """Returns dashboard, creates new if none exist."""
         if self._dashboard is None:
             # Init new dashboard if none exist
-            from seatconnect.dashboard import Dashboard
+            from CUPRAConnect.dashboard import Dashboard
             self._dashboard = Dashboard(self, **config)
         elif config != self._dashboard._config:
             # Init new dashboard on config change
-            from seatconnect.dashboard import Dashboard
+            from CUPRAConnect.dashboard import Dashboard
             self._dashboard = Dashboard(self, **config)
         return self._dashboard
 
