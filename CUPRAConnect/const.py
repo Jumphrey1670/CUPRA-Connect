@@ -19,7 +19,7 @@ CLIENT_LIST = {
 #XCLIENT_ID = '3516bc10-fabd-4eb2-b41c-b38e21e9d8f6'
 XCLIENT_ID = '9d183b70-d129-424f-9a26-c3778edf95e1'
 XAPPVERSION = '1.4.0'
-XAPPNAME = 'CUPRAConnect'
+XAPPNAME = 'seatconnect'
 USER_AGENT = 'okhttp/3.10.0'
 APP_URI = 'cupraconnect://identity-kit/login'
 
